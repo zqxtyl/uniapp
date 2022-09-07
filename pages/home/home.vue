@@ -34,13 +34,14 @@
         <view class="floor-img-box">
           <!-- 左侧大图片的盒子 -->
           <view class="left-img-box">
-            <image class="left-img" :src="item.product_list[0].image_src"
-              :style="{width: item.product_list[0].image_width + 'rpx'}"></image>
+            <image @click="goGoods(item.product_list[0].navigator_url)" class="left-img"
+              :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}"></image>
           </view>
           <!-- 右侧 4 个小图片的盒子 -->
           <view class="right-img-box">
             <view class="right-img-item" v-for="(item2, i2) in item.product_list" :key="i2" v-if="i2 !== 0">
-              <image :src="item2.image_src" mode="widthFix" :style="{width: item2.image_width + 'rpx'}"></image>
+              <image @click="goGoods(item2.navigator_url)" :src="item2.image_src" mode="widthFix"
+                :style="{width: item2.image_width + 'rpx'}"></image>
             </view>
           </view>
         </view>
@@ -66,7 +67,7 @@
     methods: {
       async getBanners() {
         const res = await getBanners()
-        console.log(res)
+        // console.log(res)
         this.swiperList = res
       },
       goToDescription(id) {
@@ -76,7 +77,7 @@
       },
       async getNavList() {
         const res = await getNavList()
-        console.log(res)
+        // console.log(res)
         this.navList = res
       },
       clickNav(item) {
@@ -88,8 +89,14 @@
       },
       async getFloordata() {
         const res = await getFloordata()
-        console.log(res)
+        // console.log(res)
         this.floors = res
+      },
+      goGoods(url) {
+        console.log(url)
+        uni.navigateTo({
+          url: '/subpkg/goods_list/goods_list?' + url.split('?')[1]
+        })
       }
     },
     onLoad() {

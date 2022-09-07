@@ -1,13 +1,14 @@
 import Fly from 'flyio/dist/npm/wx'
 const fly = new Fly()
-import totas from '@/utils/toast.js'
+import toast from '@/utils/toast.js'
 
 fly.config.baseURL = 'https://api-hmugo-web.itheima.net/api/public/v1'
-fly.config.timeout = 5000
+fly.config.timeout = 3000
 
 //添加请求拦截器
 fly.interceptors.request.use((request) => {
   //给所有请求添加自定义header
+  toast.loading('加载中...')
   request.headers["X-Tag"] = "flyio";
   //打印出请求体
   // console.log(request.body)
@@ -24,12 +25,13 @@ fly.interceptors.request.use((request) => {
 fly.interceptors.response.use(
   (response) => {
     //只将请求结果的data字段返回
+    uni.hideToast()
     return response.data.message
   },
   (err) => {
     //发生网络错误后会走到这里
-    totas.err('网络请求失败')
-    // return Promise.resolve("ssss")
+    toast.err('网络请求失败')
+    return Promise.resolve("请求失败")
   }
 )
 
